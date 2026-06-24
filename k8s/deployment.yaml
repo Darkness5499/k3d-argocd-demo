@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-app
+  namespace: dev
+  labels:
+    app: nginx-app
+spec:
+  replicas: 3 # Ép chạy 3 Pod trên 3 Node của K3d
+  selector:
+    matchLabels:
+      app: nginx-app
+  template:
+    metadata:
+      labels:
+        app: nginx-app
+    spec:
+      affinity:
+        podAntiAffinity: # Luật ép K8s rải đều 3 Pod ra 3 Node khác nhau
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - nginx-app
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: nginx
+        image: nginxdemos/hello:latest # Đây là image có sẵn giao diện web hiển thị thông tin Server/Pod đang chạy
+        ports:
+        - containerPort: 80
