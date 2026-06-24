@@ -1,32 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-app
+  name: whoami-deployment
   namespace: dev
   labels:
-    app: nginx-app
+    app: whoami-app
 spec:
-  replicas: 3 # Ép chạy 3 Pod trên 3 Node của K3d
+  replicas: 3 # Chạy 3 Pod rải đều ra 3 Node K3d
   selector:
     matchLabels:
-      app: nginx-app
+      app: whoami-app
   template:
     metadata:
       labels:
-        app: nginx-app
+        app: whoami-app
     spec:
       affinity:
-        podAntiAffinity: # Luật ép K8s rải đều 3 Pod ra 3 Node khác nhau
+        podAntiAffinity: # Luật ép rải đều Pod, nhưng lần này chỉ áp dụng cho Pod whoami
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
               matchExpressions:
               - key: app
                 operator: In
                 values:
-                - nginx-app
+                - whoami-app
             topologyKey: "kubernetes.io/hostname"
       containers:
       - name: whoami
-        image: traefik/whoami:latest # Đổi từ Nginx sang ứng dụng whoami
+        image: traefik/whoami:latest
         ports:
         - containerPort: 80

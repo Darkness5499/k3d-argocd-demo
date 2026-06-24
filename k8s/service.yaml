@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx-service
+  name: whoami-service
   namespace: dev
 spec:
   selector:
-    app: nginx-app
+    app: whoami-app # Khớp chính xác với label app: whoami-app ở file Deployment trên
   ports:
     - protocol: TCP
-      port: 80       # Port của Service
-      targetPort: 80 # Port bên trong container Nginx
+      port: 80
+      targetPort: 80
   type: ClusterIP
