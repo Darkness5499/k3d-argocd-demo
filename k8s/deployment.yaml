@@ -26,7 +26,7 @@ spec:
                 - nginx-app
             topologyKey: "kubernetes.io/hostname"
       containers:
-      - name: nginx
-        image: nginxdemos/hello:latest # Đây là image có sẵn giao diện web hiển thị thông tin Server/Pod đang chạy
+      - name: whoami
+        image: traefik/whoami:latest # Đổi từ Nginx sang ứng dụng whoami
         ports:
         - containerPort: 80
